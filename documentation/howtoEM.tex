@@ -1,0 +1,7 @@
+\section{Solving Transcript Abundance Estimation Problem Using EM Algorithm}
+
+Let $T$  be the set of transcripts of a RNA-sequence sampling. Let $l_t$ denote the length of transcript $t$, when $t \epsilon T$.
+\subsubsection{Challenges and motivation}
+Usually, in theoritical term, to compute the relative abundances, it is obvious to count the amount of reads from a transcript and deduce the parameters thereby. But there are some challenges. Due to the presence of isoform, it can happen that a single sequence read may be mapped to multiple transcripts while short read mapping. This multiple mapping pushes us to use the expected number of reads from each transcripts rather than using their exact numbers (remember using the expected number of heads and tails from coins A \& B instead of using the exact counts because we did not know which coin was tossed?).\\
+But to use expected value, we need to know the relative abundance of the transcripts again. This poses a deadlock like situation as the coin bias problem stated in previous section, where to know the biases of the coins, we needed to know the expected numbers of heads and tails from different coins, which in turn needed to use coin biases. We solved that problem using EM algorithm. This abundance estimation problem won't be the exception too.
+

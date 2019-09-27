@@ -1,0 +1,70 @@
+%\documentclass[11pt]{article}
+\documentclass[10pt,a4paper]{article}
+\usepackage[top=30pt,bottom=32pt,left=48pt,right=46pt]{geometry}
+%Gummi|065|=)
+\title{\textbf{Transcript Abundance Estimation Using Expectation-Maximization Algorithm}}
+\author{Mir Imtiaz Mostafiz (0417052041)\\
+		S.M.Farabi Mahmud (0417052068)\\
+		}
+\date{}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{makecell}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{cite}
+\begin{document}
+
+\maketitle
+
+\section*{Introduction \& motivation}
+\textbf{Transcript Abundance Estimation} is a problem which finds relative abundances of different RNA-transcripts from a set of reads, where the reads themselves were generated from those transcripts.\\
+Expectation-Maximization Algorithm is a systematic way to deduce the unknown parameters of a system, from some known observations and some known parameters of a system, through multiple iterations of expectations and maximizations.\\
+In this note, a bridge will be constructed between the concepts stated above.
+
+\section*{Prerequisites}
+To understand this topic, you need to have some basic knowledge about:
+\begin{itemize}
+\item \textbf{Basic of Probability and Distributions}: Different kinds of distributions and their mean, variance, likelihood; Sampling, Events.
+\item \textbf{Central Dogma of Genetics}: Interactive relations between DNAs, RNAs and Proteins.
+\item \textbf{Some Advanced Concepts of Computational Biology}:
+\begin{itemize}
+    \item Short Read Mapping
+    \item Alternative Splicing
+    \item *-seq
+    \item RNA-seq
+\end{itemize}
+
+
+
+\end{itemize}
+
+\begin{enumerate}
+\item \textbf{Basic of Probability and Distributions}: Different kinds of distributions and their mean, variance, likelihood; Sampling, Events.
+\item \textbf{Central Dogma of Genetics}: Interactive relations between DNAs, RNAs and Proteins.
+\item \textbf{Some Advanced Concepts of Computational Biology}: Short Read Mapping, Alternative Splicing, *-seq, RNA-seq etc.
+\item For absolutely nothing
+
+\begin{enumerate}
+    \item Short Read Mapping
+    \begin{enumerate}
+    \item one
+    \item two
+    \end{enumerate}
+    \item Alternative Splicing
+    \item *-seq
+    \item RNA-seq
+\end{enumerate}
+\end{enumerate}
+
+
+\input{EM_basic}
+\input{transcript_abundance_basic}
+\input{newEM}
+
+\section{Some related works}
+~\cite{li2011rsem} and ~\cite{li2009rna} are two notable works regarding abundance estimation problem.
+
+\bibliography{ref}
+\bibliographystyle{acm}
+\end{document}

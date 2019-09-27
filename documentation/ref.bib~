@@ -1,0 +1,81 @@
+@article{do2008expectation,
+  title={What is the expectation maximization algorithm?},
+  author={Do, Chuong B and Batzoglou, Serafim},
+  journal={Nature biotechnology},
+  volume={26},
+  number={8},
+  pages={897--899},
+  year={2008},
+  publisher={Nature Publishing Group}
+}
+@ONLINE{cdogma2017,
+author = {Boundless},
+title = {The {C}entral {D}ogma: {DNA} {E}ncodes {RNA} and {RNA} {Encodes} {Protein}},
+year = {2017},
+url = {https://www.boundless.com/biology/textbooks/boundless-biology-textbook/genes-and-proteins-15/the-genetic-code-106/the-central-dogma-dna-encodes-rna-and-rna-encodes-protein-441-11665/.}
+urldate = {2017-07-29}
+}
+@misc{ wiki:dnaseq,
+    author = "Wikipedia",
+    title = "DNA sequencing --- Wikipedia{,} The Free Encyclopedia",
+    year = "2017",
+    url = "\url{https://en.wikipedia.org/w/index.php?title=DNA_sequencing&oldid=792086686}",
+    note = "[Online; accessed 
+29-July-2017
+]"
+  }
+@misc{ wiki:pritrans,
+    author = "Wikipedia",
+    title = "Primary transcript --- Wikipedia{,} The Free Encyclopedia",
+    year = "2017",
+    url = "\url{https://en.wikipedia.org/w/index.php?title=Primary_transcript&oldid=782122468}",
+    note = "[Online; accessed 
+29-July-2017
+]"
+  }
+ @misc{ wiki:altsp,
+    author = "Wikipedia",
+    title = "Alternative splicing --- Wikipedia{,} The Free Encyclopedia",
+    year = "2017",
+    url = "https://en.wikipedia.org/w/index.php?title=Alternative_splicing&oldid=778302064",
+    note = "[Online; accessed 
+29-July-2017
+]"
+  }
+  @misc{ wiki:proiso,
+    author = "Wikipedia",
+    title = "Alternative splicing --- Wikipedia{,} The Free Encyclopedia",
+    year = "2017",
+    url = "\url{https://en.wikipedia.org/w/index.php?title=Alternative_splicing&oldid=778302064}",
+    note = "[Online; accessed 
+29-July-2017
+]"
+  }
+  
+  @misc{ wiki:rnaseq,
+    author = "Wikipedia",
+    title = "Alternative splicing --- Wikipedia{,} The Free Encyclopedia",
+    year = "2017",
+    url = "\url{https://en.wikipedia.org/w/index.php?title=Alternative_splicing&oldid=778302064}",
+    note = "[Online; accessed 
+29-July-2017
+]"
+  }
+
+@article{pachter2011models,
+  title={Models for transcript quantification from RNA-Seq},
+  author={Pachter, Lior},
+  journal={arXiv preprint arXiv:1104.3889},
+  year={2011}
+}
+@article{li2011rsem,
+  title={RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome},
+  author={Li, Bo and Dewey, Colin N},
+  journal={BMC bioinformatics},
+  volume={12},
+  number={1},
+  pages={323},
+  year={2011},
+  publisher={BioMed Central}
+}
+

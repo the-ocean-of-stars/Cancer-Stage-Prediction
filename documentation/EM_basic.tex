@@ -1,0 +1,204 @@
+\section{Expectation-Maximization Algorithm}
+
+\subsection{Prelude}
+Every system, or experimental setup, consists of three basic parts: system parameters, event observations and unknown quantities( observations/parameters). In ideal and most favorable situations, we usually use the parameters and observations to deduce the unknowns. A such experimental setup , credited to~\cite{do2008expectation}, is described below.\\
+
+Let's assume, there are two coins, $A$ and $B$. The probability that the head side is up after tossing coin $A$ is $\theta_{A}$ (so the probability that the tail side is up after tossing coin $A$ is $1-\theta_{A}$  ). Similarly, the probability that the head side is up after tossing coin $B$ is $\theta_{B}$ (so the probability that the tail side is up after tossing coin $B$ is $1-\theta_{B}$  ). The probability of picking a coin is uniformly distributed, i.e. probability of picking coin A is $P(A)=0.50$ and so is the probability of picking coin B, $P(B)$. To determine $\theta_A$ and $\theta_B$, we will follow this procedure:\\
+\begin{itemize}
+\item \textbf{Step 1}: Pick a coin (A or B).
+\item \textbf{Step 2}: Toss it 10 times and tally the head/tail events.
+\item \textbf{Step 3}: Run the steps 1 \& 2 for 5 times.
+\item \textbf{Step 4}: Determine $\theta_A$ and $\theta_B$ from the tallied event counts using the law of maximum-log-likelihood.
+\end{itemize} 
+
+So, the system can be described like this in table~\ref{exp1} (the observations are shown as an example):\\
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[h]
+\centering
+\caption{Experimental Setup (Example)}
+\label{exp1}
+\begin{tabular}{|l|l|}
+\hline
+\multirow{2}{*}{Known Parameters}                 & $P(A)=0.5$ \\ \cline{2-2}
+                                                  & $P(B)=0.5$ \\ \hline
+                                                                  
+\multirow{5}{*}{Observed Events} & Coin B: HTTTHHTHTH \\ \cline{2-2} 
+                   & Coin A: HHHHTHHHHH \\ \cline{2-2} 
+                   & Coin A: HTHHHHHTHH \\ \cline{2-2} 
+                   & Coin B: HTHTTTHHTT \\ \cline{2-2} 
+                   & Coin A: THHHHHTHTH \\ \hline
+Unknown Quantities                  & $\theta_A$ and $\theta_B$ \\ \hline
+           
+\end{tabular}
+\end{table}
+\begin{table}[]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+eee & e          & d         &  &  \\ \hline
+    & \multicolumn{2}{l|}{d} &  &  \\ \hline
+    &            &           &  &  \\ \hline
+    &            &           &  &  \\ \hline
+\end{tabular}
+\end{table}
+
+We know that the population mean of an observation set sampled from Bernouli distribution is simply their average. From table~\ref{exp1}, the tallies of coin flips can be shown in table~\ref{exp2}.
+
+\begin{table}[]
+\centering
+\caption{Coin Flip Tallies (Example)}
+\label{exp2}
+
+\begin{tabular}{|l|l|l|}
+\hline
+	Observations & Coin A & Coin B\\
+\hline
+	HTTTHHTHTH &  & 5H,5T\\
+\hline
+	HHHHTHHHHH & 9H,1T & \\
+\hline
+	HTHHHHHTHH & 8H,2T & \\
+\hline
+	HTHTTTHHTT &  & 4H,6T\\
+\hline
+	THHHHHTHTH & 7H,3T & \\
+\hline
+	Total & 24H,6T & 9H,11T\\
+\hline
+\end{tabular}
+\end{table}
+So, as per \textbf{Maximum Likelihood Estimation (MLE)} rules, ${\theta_{A}}^{\prime}=\frac{\text{Heads from A}}{\text{Heads from A + Tails from A}}=\frac{24}{24+6}=0.8$ and ${\theta_{B}}^{\prime}=\frac{\text{Heads from B}}{\text{Heads from B + Tails from B}}=\frac{9}{9+11}=0.45$.\\
+So, given the parameters and observations of a system, we could deduce some of the unknown parameters using MLE. But what, if, some of the necessary parameters, or some of the necessary observation details( like from which coins the observations were generated) are missing? \textbf{Expectation-Maximization Algorithm} is the answer.
+
+\subsection{Expectation Maximization Algorithm Explanation}
+
+To explain \textbf{Expectation Maximization Algorithm} (EM), we will manipulate the experimental setup described previously. We will assume that the information about which coins were tossed when will not be present.\\
+At first, let's brief the basic steps of EM in short:
+\begin{itemize}
+\item Step 1: Assume the unknown parameters.
+\item Step 2: Using the current parameters, both known and hidden (assumed), deduce the expected value of different quantities needed for unknown parameter computation.
+\item Step 3: Compute the new values of unknown parameters.
+\item Step 4: Repeat steps 2 \& 3 until convergence.
+
+\end{itemize} 
+
+Now, we will explain this process using the converted example. Table~\ref{exp3} shows the current setup, without mentioning the origin of observations (which coins generated which tosses). As we have to determine the value of unknown parameters $\theta_A$ and $\theta_B$, we will assume some values of them, i.e. ${\theta_A}^{(0)}=0.60$ and ${\theta_B}^{(0)}=0.50$ initially. Also, as the origins are not mentioned, we cannot compute the heads and tails in each sets of observations straightforward. Rather, we need to compute the expected number of heads and tells for each type of coins. This expected value calculation is explained below:\\
+
+Let $n$ tosses of coin $X$ generated events $x_1,x_2, \ldots, x_n$, where each $x_i \in \{H,T\}$ and $X \in \{A,B\}$. The posterior probability of $X$ being A can be calculated from priors and likelihoods as, 
+\[ P(A \rvert x_1,x_2, \ldots, x_n )= \frac{P( x_1,x_2, \ldots, x_n  \rvert A)P(A)}{P(x_1,x_2, \ldots, x_n )}\] \[\implies P(A \rvert x_1,x_2, \ldots, x_n )= \frac{P( x_1\rvert A)P(x_2 \rvert A)\ldots P(x_n \rvert A)P(A)}{P(x_1,x_2, \ldots, x_n )} \\\tag*{[Because the coin tosses are independent]}\]
+Similarly, \[P(B \rvert x_1,x_2, \ldots, x_n )= \frac{P( x_1\rvert B)P(x_2 \rvert B)\ldots P(x_n \rvert B)P(B)}{P(x_1,x_2, \ldots, x_n )}\].
+
+Combining and dividing both equations, we get new equation,
+\[ \frac{ P(A \rvert x_1,x_2, \ldots, x_n )}{ P(B \rvert x_1,x_2, \ldots, x_n )} = \frac{P( x_1\rvert A)P(x_2 \rvert A)\ldots P(x_n \rvert A)P(A)}{P( x_1\rvert B)P(x_2 \rvert B)\ldots P(x_n \rvert B)P(B)}\]\[ \implies 
+\frac{ P(A \rvert x_1,x_2, \ldots, x_n )}{ P(B \rvert x_1,x_2, \ldots, x_n )} = \frac{P( x_1\rvert A)P(x_2 \rvert A)\ldots P(x_n \rvert A)}{P( x_1\rvert B)P(x_2 \rvert B)\ldots P(x_n \rvert B)} \\\tag*{[Because $P(A)=P(B)=0.5$]}
+\]\\
+If $x_i= H$, then $P(x_i \rvert A)= \theta_{A}$ and if $x_i= T$, then $P(x_i \rvert A)=1- \theta_{A}$. Similarly, if $x_i= H$, then $P(x_i \rvert B)= \theta_{B}$ and if $x_i= T$, then $P(x_i \rvert B)=1- \theta_{B}$.\\
+If there are $k$ heads, then there will be $n-k$ tails, and the equation will look like,
+\[ \frac{ P(A \rvert x_1,x_2, \ldots, x_n )}{ P(B \rvert x_1,x_2, \ldots, x_n )} = \frac{ {\theta_{A}}^{k}{(1-\theta_{A})}^{n-k} }{ {\theta_{B}}^{k}{(1-\theta_{B})}^{n-k}}\]
+\[\implies 
+\frac{ P(A \rvert x_1,x_2, \ldots, x_n )}{P(A \rvert x_1,x_2, \ldots, x_n )+ P(B \rvert x_1,x_2, \ldots, x_n )} = \frac{{\theta_{A}}^{k}{(1-\theta_{A})}^{n-k}}{{\theta_{A}}^{k}{(1-\theta_{A})}^{n-k}+ {\theta_{B}}^{k}{(1-\theta_{B})}^{n-k}}
+\]
+\[\implies 
+P(A \rvert x_1,x_2, \ldots, x_n ) = \frac{{\theta_{A}}^{k}{(1-\theta_{A})}^{n-k}}{{\theta_{A}}^{k}{(1-\theta_{A})}^{n-k}+ {\theta_{B}}^{k}{(1-\theta_{B})}^{n-k}}
+\]Similarly, \[P(B \rvert x_1,x_2, \ldots, x_n ) = \frac{{\theta_{B}}^{k}{(1-\theta_{B})}^{n-k}}{{\theta_{A}}^{k}{(1-\theta_{A})}^{n-k}+ {\theta_{B}}^{k}{(1-\theta_{B})}^{n-k}}
+\].
+
+\begin{table}[]
+\centering
+\caption{Experimental Setup 2 (Example)}
+\label{exp3}
+\begin{tabular}{|l|l|}
+\hline
+\multirow{2}{*}{Known Parameters}                 & $P(A)=0.5$ \\ \cline{2-2}
+                                                  & $P(B)=0.5$ \\ \hline
+                                                                  
+\multirow{5}{*}{Observed Events} & HTTTHHTHTH \\ \cline{2-2} 
+                   & HHHHTHHHHH \\ \cline{2-2} 
+                   & HTHHHHHTHH \\ \cline{2-2} 
+                   & HTHTTTHHTT \\ \cline{2-2} 
+                   & THHHHHTHTH \\ \hline
+
+Unknown Quantities                  & $\theta_A$ and $\theta_B$ \\ \hline
+Assumed Quantities                  & ${\theta_A}^{(0)}=0.60$ and ${\theta_B}^{(0)}=0.50$ \\ \hline
+           
+\end{tabular}
+\end{table}
+
+
+Now, the expected number of $H$ and $T$ from $\{x_1,x_2, \ldots, x_n\}$ from type $A$ if there are $k$ $H$'s and $n-k$ $T$'s are respectively,
+\[{\lvert  H \rvert}_{expected}^{A} = \text{Probability that the observations are from A} \times \text{number of H} \] 
+\[\implies {\lvert  H \rvert}_{expected}^{A} = P(A \rvert x_1,x_2, \ldots, x_n ) \times k \]
+\[\implies 
+ {\lvert  H \rvert}_{expected}^{A}= \frac{{ {\theta_{A}}^{(0)}}^{k}{(1-{\theta_{A}}^{(0)} ) }^{n-k}}{{{{\theta_{A}}^{(0)}}^{k}}{(1-{\theta_{A}}^{(0)})}^{n-k}+ {{\theta_{B}}^{(0)}}^{k}{(1-{\theta_{B}}^{(0)})}^{n-k}} \times k
+\]
+For first set of observations,
+\[\implies {\lvert  H \rvert}_{expected}^{A^{(1)}} = \frac{ {(0.6)}^{5} {(1-0.6)}^{10-5} } { {(0.6)}^{5}{(1-0.6)}^{10-5} + {(0.5)}^{5}{(1-0.5)}^{10-5}} \times 5 \]
+\[\implies {\lvert  H \rvert}_{expected}^{A^{(1)}} = 0.45 * 5 =2.25\]
+
+Similarly, for first observations, we can deduce,
+\[{\lvert  T \rvert}_{expected}^{A^{(1)}} = 0.45 * 5 =2.25\]
+\[{\lvert  H \rvert}_{expected}^{B^{(1)}} = 0.55 * 5 =2.75\]
+\[{\lvert  T \rvert}_{expected}^{B^{(1)}} = 0.55 * 5 =2.75\]
+
+
+ 
+
+
+For each set of observations, we deduce this quantities and calculate the estimated MLE from table~\ref{exp4},\\
+\begin{table}[h]
+\centering
+\caption{MLE Computation (Example)}
+\label{exp4}
+\begin{tabular}{|l|l|l|}
+\hline
+            
+Observations & Coin A & Coin B \\ \hline                                                      
+HTTTHHTHTH & 2.25 H, 2.25 T & 2.75 H, 2.75 T \\ \hline 
+        HHHHTHHHHH & 7.2 H, 0.8 T& 1.8 H, 0.2 t\\ \hline 
+                    HTHHHHHTHH & 5.9 H, 1.5 
+T &  
+2.1 H, 0.5 
+T\\ \hline 
+                    HTHTTTHHTT & 1.4 H, 2.1 T & 2.6 H, 3.9 T\\ \hline 
+                    THHHHHTHTH & 4.5 H, 1.9 
+T & 2.5 H, 1.1 T\\ \hline
+Total & 21.3 H, 8.6 T & 11.7H, 8.4 T \\ \hline
+                       
+\end{tabular}
+\end{table}
+
+
+\[{\theta_{A}}^{(1)} =\frac{{\lvert  H \rvert}_{expected}^{A^{(total)}}}{{\lvert  H \rvert}_{expected}^{A^{(total)}}+{\lvert  T \rvert}_{expected}^{A^{(total)}}} = \frac{21.3}{21.3+8.6}=0.71\]
+\[{\theta_{B}}^{(1)} = \frac{{\lvert  H \rvert}_{expected}^{B^{(total)}}}{{\lvert  H \rvert}_{expected}^{B^{(total)}}+{\lvert  T \rvert}_{expected}^{B^{(total)}}} =  \frac{11.7}{11.7+8.4}=0.58\]
+ So, starting with assuming values $0.60$ and $0.50$, we ended with $0.71$ and $0.58$ after first iteration. The values will converge after some iterations to $0.80$ and $0.52$ respectively.
+ 
+The step where we calculated the expected numbers of heads and tails is called the \textbf{Expectation} step. The step where we calculated the new estimated value of MLE is known as the \textbf{maximization} step. We repeat these two steps one after another in EM algorithm. 
+ 
+We can summarize the uses and steps of EM algorithm in table~\ref{exp5}.
+
+\begin{table}[h]
+\centering
+\caption{When's and how's of EM}
+\label{exp5}
+
+\begin{tabular}{|l|l|}
+\hline
+	\thead{When to apply} & \thead{How to apply} \\
+\hline
+	\makecell{Some parts of the data\\ is hidden} & \makecell{Initially guess the parameters\\ of the model}
+ \\
+\hline
+	\makecell{If we know the parameters\\ to be estimated,\\ we can calculate\\ probabilities of the hidden variables} 
+ & \makecell{\textbf{Expectation (E) step} : Use current parameters\\ (and observations)\\ to reconstruct the hidden structure}
+ \\
+\hline
+	\makecell{If we know the values\\ of hidden variables,\\ we can estimate the parameters} & \makecell{\textbf{Maximization (M) step} :\\ Use that hidden structure  \\(and observations)\\ to re-estimate parameters}
+ \\
+\hline
+\end{tabular}
+\end{table} 
+
